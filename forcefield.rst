@@ -22,6 +22,8 @@ obtained from the minimization.
     Bond length :math:`l` Å
     =========== ========= ========
 
+.. _sec:ff_angles:
+
 Angles
 ------
 
@@ -53,6 +55,8 @@ constant is defined in any force field you use.
     Bond angle force constant   :math:`K_\theta`   K/rad\ :sup:`2`
     ========================== =================  ==================
 
+
+.. _sec:ff_dihedrals:
 
 Dihedrals
 ---------

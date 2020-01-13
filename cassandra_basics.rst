@@ -34,11 +34,11 @@ scratch requires preparation of the following files.
 * A molecular connectivity file (MCF) (``*.mcf``) containing the
   molecular connectivity information on bonds, angles, dihedrals,
   impropers and whether the molecule is composed of fragments.
-  For information on the MCF file, please refer to section \ref{sec:MCF_File}.
-* An input file (``*.inp``) (see section \ref{sec:Input_File})
+  For information on the MCF file, please refer to :ref:`sec:mcf_file`.
+* An input file (``*.inp``) (see :ref:`sec:input_file`)
 * If the molecule is composed of fragments, then a fragment library
   file for each of the fragments is required. For instructions on
-  how to generate these files, please refer to section \ref{sec:libgen}.
+  how to generate these files, please refer to :ref:`sec:libgen`.
 
 MCF files for united-atom models of methane, isobutane, dimethylhexane,
 cyclohexane and diethylether are provided in the ``MCF`` directory. Input
@@ -57,20 +57,20 @@ defined as a collection of atoms associated with each other through bonds. Thus
 a molecule is a species as is an ion. If you wanted to simulate sodium sulfate,
 you would need separate MCF files for the sodium ion and the sulfate ion. MCF
 files can be created manually or by using the scripts provided with the code, as
-described in the section \ref{sec:mcfgen}. Instructions for generating an MCF
+described in the section :ref:`sec:mcfgen`. Instructions for generating an MCF
 file can also be found in the ``Scripts/MCF_Generation/README`` file.  We
 will collect MCF files submitted to us by users and will post them on the
-Cassandra website https://cassandra.nd.edu. If you have an MCF file you would
-like us to post, send it to ed@nd.edu.
+Cassandra website `<https://cassandra.nd.edu>`_. If you have an MCF file you
+would like us to post, send it to ed@nd.edu.
 
 
 Input File
 ----------
 
-An input file is required for a Cassandra simulation. The input file
-specifies conditions for the simulation and various keywords required
-for the simulation in a given ensemble. Please refer to
-Chapter~\ref{sec:Input_File}  for further details.
+An input file is required for a Cassandra simulation. The input file specifies
+conditions for the simulation and various keywords required for the simulation
+in a given ensemble. Please refer to :ref:`sec:input_file` for further
+details.
 
 Fragment Library Generation
 ---------------------------
@@ -84,9 +84,9 @@ total number of fragments of a molecule is the sum of branch points and ring
 groups in the molecule. The neighboring fragments are connected by two common
 atoms present in each of the fragments. Note that the ring group contains all
 the ring atoms and those directly bonded to the ring atoms. For each fragment
-identified, Cassandra runs a pre-simulation in the gas phase to
-sample the intramolecular degrees of freedom. A library of a large number of
-these conformations are stored for use in an actual simulation.
+identified, Cassandra runs a pre-simulation in the gas phase to sample the
+intramolecular degrees of freedom. A library of a large number of these
+conformations are stored for use in an actual simulation.
 
 The gas phase library generation has been automated with the script
 ``library_setup.py`` located in the ``Scripts/Frag_Library_Setup``
@@ -107,26 +107,25 @@ To launch a Cassandra simulation, run the following command::
 
     cassandra_executable input_filename
 
-The executable will read ``input_filename`` and execute the instructions.
-Make sure that the required files (MCF, fragment library files) are located
-in the directories as given in the input file.
+The executable will read ``input_filename`` and execute the instructions.  Make
+sure that the required files (MCF, fragment library files) are located in the
+directories as given in the input file.
 
 Restarting a Simulation
 =======================
 
-Restarting a simulation requires either a checkpoint file (``*.chk`` produced
-by Cassandra) or a configuration file obtained from xyz files generated
-from a previous simulation. Please refer to Section \ref{sec:Start_Type}
-to find information about the keywords ``checkpoint`` and ``read_config``.
+Restarting a simulation requires either a checkpoint file (``*.chk`` produced by
+Cassandra) or a configuration file obtained from xyz files generated from a
+previous simulation. Please refer to :ref:`sec:start_type` to find
+information about the keywords ``checkpoint`` and ``read_config``.
 
 Cassandra Output Files
 ======================
 
 Cassandra generates several output files which can be used for later analysis.
-All have as a prefix the ``Run_Name`` specified in the input file. See Chapter
-\ref{sec:Input_File} for details. The type of output is specified by the file
-name suffix. The following are generated:
-
+All have as a prefix the ``Run_Name`` specified in the input file.
+See :ref:`sec:run_name` for details. The type of output is specified by the
+file name suffix. The following are generated:
 
 * **Log file** (``*.log``): Contains basic information on what the run is,
   timing information and reports the various parameters specified by the user. A
@@ -156,14 +155,14 @@ name suffix. The following are generated:
   ``Coord_Freq`` steps. This can be used to restart a simulation from this point
   using all of the same information as the run that was used to generate the
   checkpoint file. To do this, you must use the checkpoint restart option (see
-  Chapter \ref{sec:Input_File}). It will basically pick up where the simulation
+  :ref:`sec:start_type`. It will basically pick up where the simulation
   left off, using the same random number seed, maximum displacements, etc. This
   is useful in case your job crashes and you want to continue running a job. You
   can also use the checkpoint file to start a new simulation using the
   configuration of the checkpoint file as an initial configuration and the
   optimized maximum displacements.  To do this, use the script ``read_old.py``. You
   will need to set a new random number seed if you do this. See the
-  documentation in Chapter \ref{sec:Input_File} for more details.
+  documentation in :ref:`sec:seeds` for more details.
 
 * **H-matrix file** (``*.H`` or ``*.box#.H``): This file is written to every
   ``Coord_Freq`` MC steps. The first line is the box volume in angstrom\ :sup:`3`. The

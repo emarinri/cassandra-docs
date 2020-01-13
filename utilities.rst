@@ -6,31 +6,29 @@ Utilities
 Generate a Molecular Connectivity File
 --------------------------------------
 
-The script ``mcfgen.py`` is a tool that aims to ease the setup of
-molecular connectivity files from scratch (see section
-`[sec:MCF_File] <#sec:MCF_File>`__ to learn more about MCFs), as the
-generation of these files by hand can be error prone. In this section, a
-pentane MCF will be generated to demonstrate the use of this tool. The
-Transferable Potentials for Phase Equilibria (TraPPE) force field will
-be used to represent the pentane molecular interactions. This force
-field involves a pairwise-additive 12-6 Lennard-Jones potential to
-represent the dispersion-repulsion interactions. Additionally, bond
-angles and dihedral angles are represented through harmonic and OPLS
-functional forms, respectively. Bond lengths are kept constant. The
-force field mathematical expression becomes
+The script ``mcfgen.py`` is a tool that aims to ease the setup of molecular
+connectivity files from scratch (see the :ref:`sec:mcf_file` section to learn
+more about MCFs), as the generation of these files by hand can be error prone.
+In this section, a pentane MCF will be generated to demonstrate the use of this
+tool. The Transferable Potentials for Phase Equilibria (TraPPE) force field will
+be used to represent the pentane molecular interactions. This force field
+involves a pairwise-additive 12-6 Lennard-Jones potential to represent the
+dispersion-repulsion interactions. Additionally, bond angles and dihedral angles
+are represented through harmonic and OPLS functional forms, respectively. Bond
+lengths are kept constant. The force field mathematical expression becomes
 
 .. math::
 
    \begin{aligned}
-   U = \sum_{angles} K_\theta(\theta-\theta_0)^2 +
+   U = \sum_{angles} K_\theta(\theta-\theta_0)^2 + \\
    \sum_{dihedrals} \frac{1}{2}K_1[1+cos(\phi)]+\frac{1}{2}K_2[1-cos(2\phi)] + \frac{1}{2}K_3[1+cos(3\phi)]+\frac{1}{2}K_4[1-cos(4\phi)] + \\
    \sum_{i} \sum_{i>j} 4 \epsilon_{ij} \left [  \left ( \frac {\sigma_{ij}} { r_{ij} }\right )^{12} - \left ( \frac {\sigma_{ij}} { r_{ij} }\right )^{6}\ \right ]\end{aligned}
 
-First, generate (or obtain) a PDB file or a CML file. To generate a
-PDB or CML file, software such as Gaussview or Avogadro can be used.
-Alternatively, PDB files can be downloaded from the internet (e.g.
-www.rcsb.org). In this example, a pentane PDB file using the program
-Gaussview v5.08 was be generated, as shown below.
+First, generate (or obtain) a PDB file or a CML file. To generate a PDB or CML
+file, software such as Gaussview or Avogadro can be used.  Alternatively, PDB
+files can be downloaded from the internet (e.g., `<https://www.rcsb.org>`_).
+In this example, a pentane PDB file using the program Gaussview v5.08 was
+generated as shown below.
 
 .. image:: resources/pdbfile_final.eps
     :align: center
@@ -112,4 +110,5 @@ will also run Cassandra to generate these libraries, whose location will be at
 example, species 1, species 2 etc. Note that the script overwrites the section
 of the input file where needed (i.e. ``# Fragment_Files``) with the aforementioned
 directory locations.
+
 

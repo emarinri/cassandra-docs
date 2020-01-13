@@ -27,6 +27,7 @@ help with simulation setup. It is released under the GNU General Public License.
    forcefield
    input_files
    utilities
+   solids
 
 .. theory
 

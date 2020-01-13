@@ -1,8 +1,11 @@
 .. highlight:: none
 
+.. _ch:input_files:
 
 Files Required to Run Cassandra
 ===============================
+
+.. _sec:input_file:
 
 Simulation Input File
 ---------------------
@@ -22,6 +25,8 @@ keywords were capitalized, e.g. ``CUBIC``, some contained an initial
 capital, e.g. ``Units``, and some were all lowercase, e.g. ``kappa_ins``. New
 in version 1.2, all keywords are supported in lowercase text; each word
 in a section header must still begin with an initial capital.
+
+.. _sec:run_name:
 
 Run Name
 ~~~~~~~~
@@ -86,6 +91,8 @@ species, use the following::
     # Nbr_Species
     2
 
+.. _sec:vdw_style:
+
 VDW Style
 ~~~~~~~~~
 
@@ -133,12 +140,12 @@ selection of *Character(i,2)* as described below:
      provided to enable reproduction of literature simulations that use
      a cut off distance of half the simulation box length, but its use
      is discouraged.
-     
+
    | For example, to simulate one box with a 14 Å cutoff using tail
      corrections, specify the following:
 
     .. code-block:: none
-       
+
         # VDW_Style
         lj cut_tail 14.0
 
@@ -158,7 +165,7 @@ selection of *Character(i,2)* as described below:
      potential goes to zero at a distance specified by *Real(i,4)*
      (:math:`r_{off}` in Eq [Eq:cut\_switch]).
 
-   | A one box simulation using the ``cut_switch`` option would 
+   | A one box simulation using the ``cut_switch`` option would
      be specified as follows:
 
     .. code-block:: none
@@ -202,7 +209,7 @@ of the simulation will not be computed. If you do not wish to use a
 Coulomb potential for box *i*, set *Character(i,1)* to ``none``. If
 ``none`` is selected for *Character(i,1)* then *Character(i,2)*,
 *Real(i,3)* and *Real(i,4)* are omitted.
-  
+
 For example,
 
 .. code-block:: none
@@ -241,7 +248,7 @@ like in a Gibbs ensemble calculation, then you could use the
 following:
 
 .. code-block:: none
-    
+
     # Charge_Style
     coul ewald 12.0 1E-5
     coul ewald 30.0 1E-5
@@ -250,13 +257,13 @@ This will use an Ewald sum for both boxes. In the first box, the real
 space cutoff will be 12 Å while in the second box a larger cutoff of
 30 Å will be used.
 
-.. note:: 
+.. note::
     When performing Gibbs ensemble simulations of vapor-liquid equilibria, the
     vapor box is often much larger than the liquid box. In this case, you will
     want to use a longer real space cutoff for the larger vapor box to avoid
     using too many reciprocal space vectors.
- 
-.. note:: 
+
+.. note::
     Also note that the real space cutoffs must always be less than or equal to
     half of the shortest edge length of a simulation box.
 
@@ -306,8 +313,8 @@ interaction table is as follows:
 
     # Mixing_Rule
     custom
-    CH4 CH3 120.49 3.75 
-    CH4 CH2 82.51 3.83 
+    CH4 CH3 120.49 3.75
+    CH4 CH2 82.51 3.83
     CH3 CH2 67.14 3.85
 
 The order in which atom types are listed is unimportant, but the atom
@@ -317,6 +324,8 @@ with units K, and a collision diameter with units Å. The Mie potential
 requires four parameters: an energy parameter with units K, a
 collision diameter with units Å, a repulsive exponent, and a
 dispersive exponent.
+
+.. _sec:seeds:
 
 Starting Seed
 ~~~~~~~~~~~~~
@@ -337,7 +346,7 @@ As an example,
     # Seed_Info
     1244432 8263662
 
-.. note:: 
+.. note::
     Note that two independent simulations can be run using the same input
     information if different seeds are used. If two simulations having exactly
     the same input information and the same seeds are run, the results will be
@@ -434,7 +443,7 @@ line. For a two box simulation, box information is given as:
     # Box_Info 2
     cubic
     30.0
-    
+
     cubic
     60.0
 
@@ -466,7 +475,7 @@ matrix. For example,
     # Box_Info 1
     cell_matrix
     30  0  0
-    0  35  0 
+    0  35  0
     0   2 40
 
 defines a simulation box with basis vectors (30, 0, 0), (0, 35, 2) and
@@ -752,11 +761,11 @@ Volume
 change. Since volume changes are computationally expensive, this
 probability should normally not exceed 0.05 and values from 0.01-0.03
 are typical. *Real(2)* is the maximum volume displacement in
-Å\ :math:`^3` for box 1. *Real(3)* is the maximum volume displacement
-in Å\ :math:`^3` for box 2, and is only required for GEMC-NPT
+Å\ :sup:`3` for box 1. *Real(3)* is the maximum volume displacement
+in Å\ :sup:`3` for box 2, and is only required for GEMC-NPT
 simulations. The attempted change in box volume is selected from a
 uniform distribution. This subsection is required for NPT, GEMC-NPT
-and GEMC-NVT simulations. 
+and GEMC-NVT simulations.
 
 For example, if you are simulating a liquid with a single box in the NPT
 ensemble, the following:
@@ -819,7 +828,7 @@ following:
     # Prob_Insertion
     0.1
     cbmc cbmc
- 
+
 This tells Cassandra to attempt insertions 10% of the total moves
 and both species will be inserted using CBMC. If only species 1 is to
 be inserted or deleted, use:
@@ -916,18 +925,20 @@ attempted 30% of the time and the maximum angular displacement for the move is
 
     Note that this subsection is used only in input files that generate
     configuration libraries of ring moieties. The input file of the actual
-    simulation would involve the ``# Prob_Regrowth`` keyword. 
+    simulation would involve the ``# Prob_Regrowth`` keyword.
+
+.. _sec:start_type:
 
 Start Type
 ~~~~~~~~~~
 
 | ``# Start_Type``
-| *Character(1) [options]* 
+| *Character(1) [options]*
 
 This section specifies whether Cassandra generates an initial
 configuration or uses a previously generated configuration to start a
 simulation. *Character(1)* can be one of four keywords: ``make_config``
-``read_config``, ``add_to_config``, or ``checkpoint``. The specifications 
+``read_config``, ``add_to_config``, or ``checkpoint``. The specifications
 for *[options]* depends on *Character(1)* as described below:
 
 
@@ -968,7 +979,7 @@ for *[options]* depends on *Character(1)* as described below:
      This keyword can be repeated for each box. For example, to start a
      simulation using a configuration of 50 molecules each of species 1
      and 2:
-     
+
      .. code-block:: none
 
         # Start_Type
@@ -990,7 +1001,7 @@ for *[options]* depends on *Character(1)* as described below:
         <number of atoms>
         comment line
         <element> <x> <y> <z>
-        ... 
+        ...
 
 -  | ``add_to_config`` will read the coordinates from an .xyz file,
      but then insert additional molecules. After ``add_to_config`` specify
@@ -1028,7 +1039,7 @@ for *[options]* depends on *Character(1)* as described below:
      purpose, in addition to the checkpoint keyword, additional
      information in the form of the name of the checkpoint file
      *Character(1)* is required in the following format:
-   
+
    | ``checkpoint`` *Character(1)*
    | For example, to continue simulations from a checkpoint file
      ``methane_vle_T148.chk``, you might specify:
@@ -1046,14 +1057,14 @@ for *[options]* depends on *Character(1)* as described below:
         if ``# Start_Type`` is ``read_config``, then the seeds specified
         in the input file are used.
 
-.. note:: 
+.. note::
     Unless starting from a checkpoint file, input files for a multi-box
     simulation must have one line for each box in the ``Start_Type``
     section. Each line can start with a different keyword. For example, a
     GEMC simulation of a water(1)-methane(2) mixture can begin from an
     equilibrated water box and a new vapor box:
     .. code-block::
-    
+
         # Start_Type
         read_config 100 0 water.xyz
         make_config  50  50
@@ -1090,7 +1101,7 @@ moves, specify the following:
 
     # Run_Type
     equilibration 100 10
-    
+
 For an NVT production run in which the acceptance ratios of various thermal
 moves are printed to the log file after every 250 MC steps of a given thermal
 move, use the following:
@@ -1156,7 +1167,7 @@ simulation of 1,000 sweeps with thermodynamic quantities are printed every 100
 sweeps and coordinates are output every 100 sweeps, use the following:
 
 .. code-block:: none
-    
+
     # Simulation_Length_Info
     units sweeps
     prop_freq 100
@@ -1172,7 +1183,7 @@ example, during a run of 1,000,000 steps, with properties computed every 100
 steps and averaged every 100,000 steps, specify:
 
 .. code-block:: none
-    
+
     # Simulation_Length_Info
     units steps
     run 1000000
@@ -1219,7 +1230,7 @@ system to be written, you may specify the following:
     energy_total
     volume
     pressure
-    
+
 For a GEMC-NVT simulation, total energy and density of all the species in box 1
 and total energy, density of all the species in box 2 along with the pressure
 may be output using the following format:
@@ -1229,7 +1240,7 @@ may be output using the following format:
     # Property_Info 1
     energy_total
     density
-    
+
     # Property_Info 2
     energy_total
     density
@@ -1246,7 +1257,7 @@ In this section, information about the fragment library is specified.
 :math:`i`; *Integer(i)* is the corresponding integer id specifying the
 type of the fragment.
 
-.. note:: 
+.. note::
 
     This section is automatically generated by ``library_setup.py``. However,
     if there is a need to change this section, follow the example given below.
@@ -1289,9 +1300,9 @@ File Info
 
 This section is used only while generating a fragment library.  Cassandra will
 use the filename specified in *Character* to store different conformations of
-the fragment being simulated. 
+the fragment being simulated.
 
-.. note:: 
+.. note::
 
     This section is automatically handled
     by ``library_setup.py``. However, if the user wishes to modify this part,
@@ -1301,7 +1312,7 @@ the fragment being simulated.
 
         # File_Info
         frag.dat
-    
+
     This tells Cassandra to store the fragment library in the file named ``frag.dat``.
 
 CBMC parameters
@@ -1321,7 +1332,7 @@ configurational regrowth (``# Prob_Regrowth``).
 This section is only required if molecules are regrown, inserted and/or
 deleted.  Keyword ``kappa_ins`` is required if the section ``# Start_Type`` is
 given with keyword ``make_config`` or ``add_to_config``, or if the section ``#
-Sim_Type`` is ``gcmc``, ``gemc`` or ``gemc_npt``. 
+Sim_Type`` is ``gcmc``, ``gemc`` or ``gemc_npt``.
 
 Keyword ``kappa_ins`` is required if section ``# CBMC_Info`` is required.
 For a biased insertion, a fragment is chosen to insert first in proportion to
@@ -1360,6 +1371,9 @@ selection and the cutoff for biasing energy calculation is set to 5.0
     kappa_dih 10
     rcut_cbmc 5.0 6.5
 
+
+.. _sec:mcf_file:
+
 Molecular Connectivity File
 ---------------------------
 
@@ -1374,14 +1388,14 @@ a ``!``. Similarly to the input file, the order of the keywords is not
 important. A complete list of the keywords is provided below.
 
 .. note::
-    
+
     MCFs are generated by the script ``mcfgen.py`` automatically.  The
     following description is provided for the users who wish to modify the MCF
     or manually write the MCF.
 
 
 .. warning::
-    
+
     Parameters for all of the following keywords must be separated by spaces
     only. Do not use the tab character.
 
@@ -1417,7 +1431,7 @@ abort. The inputs are specified below:
    interactions. Options are ``LJ`` for Lennard-Jones, ``Mie`` for the Mie
    potential, or ``NONE`` if the atom type does not have vdW interactions.
    ``LJ`` and ``Mie`` cannot be used in the same simulation. This must match
-   what is given for ``# VDW_Style`` (subsection [sec:VDW\_Style]) in
+   what is given for ``# VDW_Style`` (:ref:`sec:vdw_style`) in
    the input file.
 
 -  *Character(fin)*: The final entry on the line is ``ring`` only if the
@@ -1444,7 +1458,7 @@ For Mie,
 
 -  *Real(11)*: The dispersive exponent.
 
-.. note:: 
+.. note::
 
     For single-fragment species, the branch point atom
     is listed as the first atom.
@@ -1452,7 +1466,7 @@ For Mie,
 For example, for a united atom pentane model:
 
 .. code-block:: none
-    
+
     # Atom_Info
     5
     1 CH3_s1 C 15.0107 0.0 LJ 98.0 3.75
@@ -1490,7 +1504,7 @@ For a molecule containing rings, for example cyclohexane:
     6 CH_s1 C 13.0107 0.0 LJ 52.5 3.91 ring
 
 .. note::
-    
+
     The flag ‘ring’ was appended as the last column for each site in this
     cyclic molecule.
 
@@ -1504,7 +1518,7 @@ For the SPC/E water model:
     2 H2_s1 H 1.000 0.4238 NONE
     3 H3_s1 H 1.000 0.4238 NONE
 
-.. note:: 
+.. note::
 
     This is a molecule with a single fragment, so the branch point atom is
     the first atom in the list.
@@ -1560,7 +1574,7 @@ the following:
     # Bond_Info
     2
     1 1 2 fixed 1.0
-    2 1 3 fixed 1.0 
+    2 1 3 fixed 1.0
 
 In the above example, two bonds are specified whose fixed length is
 set to 1.0 Å.
@@ -1584,7 +1598,7 @@ a required keyword in the MCF. If not specified, the code will abort.
    is the ID of the central atom.
 
 -  *Character(i,6)*: Type of the angle. Currently, Cassandra supports
-   ‘fixed’ and ‘harmonic’ (Eq. section [Eq:angle\_potential]) angles.
+   ‘fixed’ and ‘harmonic’ (see :ref:`sec:ff_angles`) angles.
    For the ‘fixed’ option, *Real(i,7)* is the value of the angle and
    *Real(i,8)* is ignored by the code if specified. In the case of
    ’harmonic’ potential type, *Real(i,7)* specifies the harmonic force
@@ -1614,10 +1628,10 @@ An example for SPC/E water model with fixed angles is:
 
     # Angle_Info
     1
-    1 2 1 3 fixed 109.47 
+    1 2 1 3 fixed 109.47
 
 This model has only one angle that is set to 109.47°.
-No force constant is provided as the angle is fixed. 
+No force constant is provided as the angle is fixed.
 
 Dihedral Info
 ~~~~~~~~~~~~~
@@ -1640,11 +1654,11 @@ in the MCF. If not specified, the code will abort.
 -  *Character(i,7)* : Dihedral potential type. Acceptable options are ``OPLS``,
    ``CHARMM``, ``harmonic`` and ``none``. If ``OPLS`` dihedral potential type is
    selected, then the real numbers *Real(i,8) - Real(i,11)* are the coefficients
-   in the Fourier series (see Eq  [Eq:phi\_OPLS]). The units are in kJ/mol. For
+   in the Fourier series (see :ref:`sec:ff_dihedrals`). The units are in kJ/mol. For
    the ``CHARMM`` dihedral potential type, three additional parameters are
-   specified: :math:`a_0, a_1` and :math:`\delta` (section [Eq:phi\_CHARMM]). If
+   specified: :math:`a_0, a_1` and :math:`\delta` (see :ref:`sec:ff_dihedrals`). If
    ``harmonic`` dihedral potential type is used, then two additional parameters,
-   :math:`K_{phi}` and :math:`\phi_0` (section Eq  [Eq:phi\_harmonic]), are
+   :math:`K_{phi}` and :math:`\phi_0` (see :ref:`sec:ff_dihedrals`), are
    specified. For the ``none`` dihedral potential type, no additional parameters
    are necessary.
 
@@ -1656,7 +1670,7 @@ potential type, the dihedrals are specified as follows:
     # Dihedral_Info
     2
     1 1 2 3 4 OPLS 0.0 2.95188 -0.5670 6.5794
-    2 2 3 4 5 OPLS 0.0 2.95188 -0.5670 6.5794 
+    2 2 3 4 5 OPLS 0.0 2.95188 -0.5670 6.5794
 
 In this model two dihedral angles are specified by atoms 1,2,3,4 and
 2,3,4,5. This model uses an OPLS functional form and thus four
@@ -1693,7 +1707,7 @@ turns off 1-2 and 1-3 interactions, scales the VDW and
 Coulombic interactions for 1-4 atoms by 50%, and uses full
 interactions for all other atom pairs in the species.
 
-.. note:: 
+.. note::
 
     If the ``# Intra_Scaling`` section is missing from the MCF, it will be
     looked for in the input file. If provided, the values in the MCF file
@@ -1761,7 +1775,7 @@ For example, for a pentane united atom model:
 .. code-block:: none
 
     # Fragment_Connectivity
-    2 
+    2
     1 1 2
     2 2 3
 
