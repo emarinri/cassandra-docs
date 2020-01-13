@@ -20,9 +20,9 @@ lengths are kept constant. The force field mathematical expression becomes
 .. math::
 
    \begin{aligned}
-   U = \sum_{angles} K_\theta(\theta-\theta_0)^2 + \\
-   \sum_{dihedrals} \frac{1}{2}K_1[1+cos(\phi)]+\frac{1}{2}K_2[1-cos(2\phi)] + \frac{1}{2}K_3[1+cos(3\phi)]+\frac{1}{2}K_4[1-cos(4\phi)] + \\
-   \sum_{i} \sum_{i>j} 4 \epsilon_{ij} \left [  \left ( \frac {\sigma_{ij}} { r_{ij} }\right )^{12} - \left ( \frac {\sigma_{ij}} { r_{ij} }\right )^{6}\ \right ]\end{aligned}
+   U = \sum_{angles} & K_\theta(\theta-\theta_0)^2 + \\
+   \sum_{dihedrals} & \frac{1}{2}K_1[1+cos(\phi)]+\frac{1}{2}K_2[1-cos(2\phi)] + \frac{1}{2}K_3[1+cos(3\phi)]+\frac{1}{2}K_4[1-cos(4\phi)] + \\
+   \sum_{i} \sum_{i>j} & 4 \epsilon_{ij} \left [  \left ( \frac {\sigma_{ij}} { r_{ij} }\right )^{12} - \left ( \frac {\sigma_{ij}} { r_{ij} }\right )^{6}\ \right ]\end{aligned}
 
 First, generate (or obtain) a PDB file or a CML file. To generate a PDB or CML
 file, software such as Gaussview or Avogadro can be used.  Alternatively, PDB
@@ -32,24 +32,27 @@ generated as shown below.
 
 .. image:: resources/pdbfile_final.eps
     :align: center
-    :height: 1in
+    :height: 2in
 
 Append a column containing the atom types.
 
 .. image:: resources/pdbfile_edited_final.eps
-    :height: 1in
+    :align: center
+    :height: 2in
 
 Avogadro v1.1.1 can also be used to generate CML files. Below is an
 example of a CML file generated using Avogadro.
 
 .. image:: resources/pentane_cml.eps
-    :height: 1.5in
+    :align: center
+    :height: 2in
 
 Modify the pentane united atom CML file. Note that the atom type is
 appended as a last column between quotation marks.
 
 .. image:: resources/pentane_cml_modified.eps
-    :height: 1.5in
+    :align: center
+    :height: 2in
 
 In the terminal, run the following command:
 
@@ -61,6 +64,7 @@ This command will create an .ff file. The first three sections of the FF file
 are displayed next. Do not modify these.
 
 .. image:: resources/top_ff.eps
+    :align: center
     :height: 2in
 
 The force field parameters for non-bonded (not shown), bonded, angle, dihedral
@@ -69,6 +73,7 @@ corresponding keyword. For example, the angle type CH3 CH2 CH2 has an angle of
 114.0. This value must be placed next to the “Angle” keyword.
 
 .. image:: resources/body_ff.eps
+    :align: center
     :height: 2in
 
 For more examples of filled ff files, please refer to the examples

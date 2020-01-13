@@ -9,13 +9,13 @@ the following files are required to run a simulation with a rigid solid or
 surface:
 
 -  a molecular connectivity file with force field parameters for each atom in
-  the solid (``*.mcf``)
+   the solid (``*.mcf``)
 
 -  a fragment library file listing the coordinates of each atom in the solid
-  (``*.dat``)
+   (``*.dat``)
 
 -  a configuration file with the initial coordinates of the all atoms in the
-  system (``*.xyz``)
+   system (``*.xyz``)
 
 The MCF and fragment library file can be created using the scripts discussed in
 :ref:`sec:mcfgen` and :ref:`sec:libgen`.  Each of these scripts requires a
