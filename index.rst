@@ -10,14 +10,22 @@ Cassandra User Documentation
    :width: 300
    :align: center
 
-Cassandra is an open source Monte Carlo package developed in the Maginn group at the University of Notre Dame to perform atomistic simulations of molecules composed of rings, chains, or both. Cassandra is suited to compute the thermodynamic properties of fluids and phase equilibria. It handles a standard "Class I"-type force field having fixed bond lengths. Cassandra uses OpenMP parallelization and comes with a number of scripts, utilities and examples to help with simulation setup. It is released under the GNU General Public License.
+Cassandra is an open source Monte Carlo package developed in the Maginn group at
+the University of Notre Dame to perform atomistic simulations of molecules
+composed of rings, chains, or both. Cassandra is suited to compute the
+thermodynamic properties of fluids and phase equilibria. It handles a standard
+"Class I"-type force field having fixed bond lengths. Cassandra uses OpenMP
+parallelization and comes with a number of scripts, utilities and examples to
+help with simulation setup. It is released under the GNU General Public License.
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
-   overview.rst
-   theory.rst
+   overview
+   theory
+   cassandra_basics
+   forcefield
 
 .. Introduction
 .. ============
