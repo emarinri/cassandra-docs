@@ -23,9 +23,11 @@ help with simulation setup. It is released under the GNU General Public License.
    :caption: Contents:
 
    overview
-   theory
    cassandra_basics
    forcefield
+   input_files
+
+.. theory
 
 .. Introduction
 .. ============
