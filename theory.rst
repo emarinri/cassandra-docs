@@ -71,7 +71,7 @@ rules of these moves, please refer to sections :ref:`sec:translate`,
 
 .. _sec:translate:
 
-Molecule Translation 
+Molecule Translation
 ~~~~~~~~~~~~~~~~~~~~
 
 A molecule is translated by moving its center of mass in each Cartesian
@@ -94,14 +94,14 @@ Eq. :eq:`pnvtratio`
 In Cassandra, the translation move is implemented in the subroutine
 ``Translate`` defined in ``move_translate.f90``. The variable names in the move_translate.f90 code
 are identified with the symbols from
-Eq. :eq:`nvt_acc` in Table
-`[table:translate] <#table:translate>`__.
+Eq. :eq:`nvt_acc` in :numref:`table:translate`
 
 ::
 
    ln_pacc = beta(ibox) * delta_e
    accept = accept_or_reject(ln_pacc)
 
+.. _table:translate:
 .. table:: Variable symbols and code names for translating and rotating a molecule.
 
    +-------------------------+---------------------------+
@@ -131,6 +131,9 @@ If the molecule is linear:
    :math:`\psi` around :math:`z'`, as shown below.
 
 .. figure:: resources/EulerAngles.eps
+    :name: fig:euler_angles
+
+    Example of Euler angles.
 
 Even though three angles are randomly chosen, the probability of the resulting
 orientation is :math:`d\cos(\theta)d\phi/4\pi`.
@@ -176,12 +179,12 @@ follows:
    U(\mathbf{q}_{int,n}^{(i)})}/Z_{int}`, where :math:`\mathbf{q}_{int,n}^{(i)}`
    are the internal bond or improper angles of molecule :math:`i` in microstate
    :math:`n` and :math:`Z_{int}` is the configurational partition function over
-   internal degrees of freedom (see Eq. :eq:`config_partition_fxn_1vt`).
+   internal degrees of freedom (see Eq. :eq:`eq:config_partition_fxn_1vt`).
 
 #. Pick three random angles: :math:`\phi` on [:math:`-\pi,\pi`],
    :math:`\cos(\theta)` on [-1,1], and :math:`\psi` on [:math:`-\pi,\pi`].
-   Rotate the molecule as shown in Fig.  `[fig:EulerAngles]
-   <#fig:EulerAngles>`__. The probability of the resulting orientation is
+   Rotate the molecule as shown in :numref:`fig:euler_angles`.
+   The probability of the resulting orientation is
    :math:`d\mathbf{q}_{rot}/Z_{rot}`, which for a nonlinear molecule is
    :math:`d\cos(\theta) d\phi d\psi / 8 \pi^2`.
 
@@ -363,6 +366,7 @@ move_volume.f90.
            - total_molecules * DLOG(box_list(this_box)%volume/box_list_old%volume)
    accept = accept_or_reject(ln_pacc)
 
+.. _table:volume:
 .. table:: Variable symbols and code names for volume scaling move.
 
    +-------------------------+---------------------------+
@@ -382,10 +386,6 @@ move_volume.f90.
    +-------------------------+---------------------------+
    | :math:`V_m`             | box_list_old%volume       |
    +-------------------------+---------------------------+
-   | .. raw:: latex          |                           |
-   |                         |                           |
-   |    \multicolumn{2}{c}{} |                           |
-   +-------------------------+---------------------------+
 
 .. _sec:MuVT:
 
@@ -404,7 +404,8 @@ molecules :math:`N` and energy :math:`E` fluctuate. The partition function is
 The probability of the system having :math:`N` molecules is
 
 .. math::
-    :label: eq:pN
+    :label: eq:pn
+
     p(N) = \frac{Q(N,V,T)e^{\beta \mu N}}{\Xi(\mu,V,T)}
 
 The probability of observing microstate :math:`m` with :math:`N_m` molecules and
@@ -423,6 +424,7 @@ moves. The ratio of microstate probabilities is
 
 .. math::
     :label: eq:pmuvt_ratio
+
     \frac{p_m}{p_n} = e^{\beta \Delta U - \beta \mu \Delta N}\ \left[\frac{Q(1,V,T)}{Z(1,V,T)}\ d\mathbf{q}\right]^{-\Delta N}
 
 Alternatively, Eq. :eq:`eq:pmuvt_ratio` can be recast to use the fugacity
@@ -461,24 +463,20 @@ Inserting a Molecule with Configurational Bias Monte Carlo
 In Configurational Bias Monte Carlo (CBMC), the molecular conformation of the
 inserted molecule is molded to the insertion cavity. First, the molecule is
 parsed into fragments such that each fragment is composed of (a) a central atom
-and the atoms directly bonded to it (see Fig.  `[fig:propaneFragments]
-<#fig:propaneFragments>`__), or (b) a ring of atoms and all the atoms directly
+and the atoms directly bonded to it (see :numref:`fig:propane_fragments`), or
+(b) a ring of atoms and all the atoms directly
 bonded to them. Then, a position, orientation and molecular conformation of the
 molecule to be inserted are selected via the following steps:
 
+.. figure:: resources/propane.eps
+    :name: fig:propane_fragments
 
-.. figure:: c3.eps
-   :alt: (a) An all-atom model of propane. (b) The same model as in (a),
-   but parsed into three fragments.
-   :name: fig:propaneFragments
-   :width: 99.0%
-
-   (a) An all-atom model of propane. (b) The same model as in (a), but
-   parsed into three fragments.
+    (a) An all-atom model of propane. (b) The same model as in (a), but
+    parsed into three fragments.
 
 #. Select the order in which each fragment of the (:math:`N+1`)th molecule will
    be placed. The probability of the resulting sequence is :math:`p_{seq}`. (See
-   example in Table.  `[table:propane] <#table:propane>`__.)
+   example in :numref:`table:propane`)
 
    #. The first fragment :math:`i` is chosen with uniform probability 1/\
       :math:`N_{frag}`.
@@ -534,9 +532,9 @@ molecule to be inserted are selected via the following steps:
    #. Select one of the trial dihedrals with probability
       :math:`e^{-\beta \Delta U_k^{dih}} / \sum_k{e^{-\beta \Delta U_k^{dih}}}`.
 
-.. table:: Possible sequences and probabilities for inserting the
-fragments of the all-atom model of propane shown in Fig.
-`[fig:propaneFragments] <#fig:propaneFragments>`__.
+.. _table:propane:
+
+.. table:: Possible sequences and probabilities for inserting the fragments of the all-atom model of propane shown in :numref:`fig:propane_fragments`.
 
    +-------------------------+-----------------+
    | Sequence                | :math:`p_{seq}` |
@@ -548,10 +546,6 @@ fragments of the all-atom model of propane shown in Fig.
    | 2 3 1                   | 1/6             |
    +-------------------------+-----------------+
    | 3 2 1                   | 1/3             |
-   +-------------------------+-----------------+
-   | .. raw:: latex          |                 |
-   |                         |                 |
-   |    \multicolumn{2}{c}{} |                 |
    +-------------------------+-----------------+
 
 The overall probability :math:`\alpha_{mn}` of attempting the insertion with the
@@ -592,14 +586,15 @@ with Eq. :eq:`eq:pmuvt_ratio` or Eq. :eq:`eq:pfvt_ratio` gives the acceptance
 probability for a CBMC insertion move
 
 .. math::
-   :label: eq:pacc_cbmcinsert_mushift
+    :label: eq:pacc_cbmcinsert_mushift
 
-   \ln\left( \frac{\alpha_{mn}}{\alpha_{nm}} \frac{p_m}{p_n} \right) &= \beta \left[\Delta U - U(\mathbf{q}^{(N+1)}_{frag,n})\right] - \beta \mu' + \ln\left( \frac{(N+1)\Lambda^3}{V} \right) + \ln\left( p_{seq}p_{bias} \right)
+    \ln\left( \frac{\alpha_{mn}}{\alpha_{nm}} \frac{p_m}{p_n} \right) = \beta \left[\Delta U - U(\mathbf{q}^{(N+1)}_{frag,n})\right] - \beta \mu' + \ln\left( \frac{(N+1)\Lambda^3}{V} \right) + \ln\left( p_{seq}p_{bias} \right)
+
 
 .. math::
     :label: eq:pacc_cbmcinsert_fshift
 
-    \ln\left( \frac{\alpha_{mn}}{\alpha_{nm}} \frac{p_m}{p_n} \right) &= \beta \left[\Delta U - U(\mathbf{q}^{(N+1)}_{frag,n})\right] + \ln\left( \frac{N+1}{\beta f' V} \right) + \ln\left( p_{seq}p_{bias} \right)
+    \ln\left( \frac{\alpha_{mn}}{\alpha_{nm}} \frac{p_m}{p_n} \right) = \beta \left[\Delta U - U(\mathbf{q}^{(N+1)}_{frag,n})\right] + \ln\left( \frac{N+1}{\beta f' V} \right) + \ln\left( p_{seq}p_{bias} \right)
 
 where :math:`\mu'` and :math:`f'` are, respectively, a shifted chemical
 potential and a skewed fugacity,
@@ -607,12 +602,12 @@ potential and a skewed fugacity,
 .. math::
     :label: eq:mushift
 
-    \mu' &=\mu+k_BT\ln\left( Q_{rot+int} \frac{Z_{frag}\Omega_{dih}}{Z_{int}} \right) \\
+    \mu' =\mu+k_BT\ln\left( Q_{rot+int} \frac{Z_{frag}\Omega_{dih}}{Z_{int}} \right)
 
 .. math::
     :label: eq:fshift
 
-    f' &= f \frac{Z_{frag}\Omega_{dih}}{Z_{int}}
+    f' = f \frac{Z_{frag}\Omega_{dih}}{Z_{int}}
 
 All of the terms in Eqs. :eq:`eq:mushift` and :eq:`eq:fshift` are intensive.
 GCMC simulations using Eqs. :eq:`eq:pacc_cbmcinsert_mushift` and
@@ -632,8 +627,8 @@ d\mathbf{q}_{frag}` does not.
 
 In Cassandra, the insertion move is implemented in the subroutine Insertion in
 move_insert.f90. The relevant lines from version 1.2 are quoted below. The
-variable names in the move_insert.f90 code are identified with symbols in Table
-`[table:cbmcInsert] <#table:cbmcInsert>`__.
+variable names in the move_insert.f90 code are identified with symbols in
+:numref:`table:cbmc_insert`.
 
 ::
 
@@ -657,10 +652,7 @@ variable names in the move_insert.f90 code are identified with symbols in Table
 Note that GCMC simulations using fugacities are currently not supported in
 Cassandra. This feature will be implemented in a future release.
 
-.. raw:: latex
-
-   \centering
-
+.. _table:cbmc_insert:
 .. table:: Variable symbols and code names for inserting a molecule
 
    +-------------------------------+---------------------------------------+
@@ -681,10 +673,6 @@ Cassandra. This feature will be implemented in a future release.
    | :math:`V`                     | box_list(this_box)%volume             |
    +-------------------------------+---------------------------------------+
    | :math:`\Lambda`               | species_list(is)%de_broglie(this_box) |
-   +-------------------------------+---------------------------------------+
-   | .. raw:: latex                |                                       |
-   |                               |                                       |
-   |    \multicolumn{2}{c}{}       |                                       |
    +-------------------------------+---------------------------------------+
 
 .. _sec:cbmcDelete:
@@ -718,58 +706,56 @@ calculated using the following procedure:
 #. Calculate the weight of the fragment’s current center of mass (COM)
    coordinates:
 
-   #. Compute the interaction potential energy :math:`\Delta U^{ins}`
+   a. Compute the interaction potential energy :math:`\Delta U^{ins}`
       between fragment :math:`j` and the other :math:`N-1` molecules.
 
-   #. Select :math:`\kappa_{ins}-1` trial coordinates
+   b. Select :math:`\kappa_{ins}-1` trial coordinates
       :math:`\mathbf{r}_k`, each with uniform probability
       :math:`d\mathbf{r}/V`.
 
-   #. Calculate the weight of the fragment’s current COM amongst the
+   c. Calculate the weight of the fragment’s current COM amongst the
       trial coordinates,
       :math:`e^{-\beta \Delta U^{ins}} / \sum_k{e^{-\beta \Delta U_k^{ins}}}`.
 
 #. For each additional fragment :math:`j`:
 
-   #. Calculate the intramolecular potential energy of fragment
+   a. Calculate the intramolecular potential energy of fragment
       :math:`j`\ ’s current conformation,
       :math:`U(\mathbf{q}_{frag_j})`. The weight of this conformation in
       the Boltzmann distribution is
       :math:`e^{-\beta U(\mathbf{q}_{frag_j})}d\mathbf{q}_{frag_j}/Z_{frag_j}`.
 
-   #. Calculate the interaction potential energy :math:`\Delta U^{dih}`
+   b. Calculate the interaction potential energy :math:`\Delta U^{dih}`
       between fragment :math:`j`, on the one hand, and fragments
       :math:`i` through :math:`j-1` and the other :math:`N-1` molecules.
 
-   #. Calculate the current dihedral :math:`\phi_0` of fragment
+   c. Calculate the current dihedral :math:`\phi_0` of fragment
       :math:`j`. Compute the interaction potential energy
       :math:`\Delta U_k^{dih}` at :math:`\kappa_{dih}-1` trial dihedrals
       :math:`\phi_k = \phi_{k-1} + 2\pi/\kappa_{dih}`.
 
-   #. Compute the weight of :math:`\phi_0` amongst the trial dihedrals,
+   d. Compute the weight of :math:`\phi_0` amongst the trial dihedrals,
       :math:`e^{-\beta \Delta U^{dih}}/ \sum_k{e^{-\beta \Delta U_k^{dih}}}`.
 
 The overall probability :math:`\alpha_{nm}` is
 
 .. math::
+   :label: eq:alpha_cbmc_reverse_delete
 
-   :label: eq:alpha_cbmcReverseDelete 
-   \alpha_{nm} = p_{seq}\ p_{bias}\ \frac{e^{-\beta U(\mathbf{q}_{frag})}d\mathbf{q}}{VZ_{rot}Z_{frag}\Omega_{dih}}.
+    \alpha_{nm} = p_{seq}\ p_{bias}\ \frac{e^{-\beta U(\mathbf{q}_{frag})}d\mathbf{q}}{VZ_{rot}Z_{frag}\Omega_{dih}}.
 
 The acceptance criteria for deleting a molecule inserted via CBMC is
 
 .. math::
+   :label: eq:pacc_cbmc_delete_mu_shift
 
-   \begin{aligned}
-   :label: eq:pAcc_cbmcDeleteMuShift 
    \ln\left( \frac{\alpha_{mn}}{\alpha_{nm}} \frac{p_m}{p_n} \right) &= \beta \left[\Delta U + U(\mathbf{q}^{(i)}_{frag,m})\right] + \beta \mu' + \ln\left( \frac{V}{N\Lambda^3} \right) - \ln\left( p_{seq}p_{bias} \right) \\
-   :label: eq_pAcc_cbmcDeleteF 
-   &= \beta \left[\Delta U + U(\mathbf{q}^{(i)}_{frag,m})\right] + \ln\left( \frac{\beta f' V}{N} \right) - \ln\left( p_{seq}p_{bias} \right)\end{aligned}
+                                                                     &= \beta \left[\Delta U + U(\mathbf{q}^{(i)}_{frag,m})\right] + \ln\left( \frac{\beta f' V}{N} \right) - \ln\left( p_{seq}p_{bias} \right)
 
 In Cassandra, the deletion move is implemented in the subroutine
 Deletion in move_delete.f90. The relevant lines are quoted below. The
 variable names in move_delete.f90 code are identified with symbols in
-Table `[table:cbmcDelete] <#table:cbmcDelete>`__.
+:numref:`table:cbmc_delete`.
 
 ::
 
@@ -793,10 +779,7 @@ Table `[table:cbmcDelete] <#table:cbmcDelete>`__.
 Note that GCMC simulations using fugacities are currently not supported
 in Cassandra. This feature will be implemented in a future release.
 
-.. raw:: latex
-
-   \centering
-
+.. _table:cbmc_delete:
 .. table:: Variable symbols and code names for deleting a molecule
 
    +------------------------------+---------------------------------------+
@@ -817,10 +800,6 @@ in Cassandra. This feature will be implemented in a future release.
    | :math:`V`                    | box_list(this_box)%volume             |
    +------------------------------+---------------------------------------+
    | :math:`\Lambda`              | species_list(is)%de_broglie(this_box) |
-   +------------------------------+---------------------------------------+
-   | .. raw:: latex               |                                       |
-   |                              |                                       |
-   |    \multicolumn{2}{c}{}      |                                       |
    +------------------------------+---------------------------------------+
 
 .. _sec:cbmcRegrow:
@@ -848,38 +827,35 @@ The overall probability :math:`\alpha_{mn}` of attempting to regrow the
 molecule with the selected conformation is
 
 .. math::
+    :label: eq:alpha_cbmc_regrow
 
-   \begin{aligned}
-   \alpha_{mn} &= \frac{p_{seq}}{N N_{bonds}}\ \left[\prod_{j=1}^{N_{del}}{\frac{e^{-\beta U(\mathbf{q}^{(i)}_{frag_j})}d\mathbf{q}_{frag_j}}{Z_{frag_j}}}\right]\ \left[\prod_{j=1}^{N_{del}}{\frac{\kappa_{dih}d\phi}{2\pi}\ \frac{e^{-\beta \Delta U_k^{dih}}}{\sum_k{e^{-\beta \Delta U_k^{dih}}}}}\right] \nonumber \\
-   :label: eq:alpha_cbmcRegrow 
-   &= \frac{p_{seq}}{N N_{bonds}}\ \frac{e^{-\beta U(\mathbf{q}^{(i)}_{del,n})}d\mathbf{q}}{Z_{del}\Omega_{del}}\ p_{forward}\end{aligned}
+    \alpha_{mn} &= \frac{p_{seq}}{N N_{bonds}}\ \left[\prod_{j=1}^{N_{del}}{\frac{e^{-\beta U(\mathbf{q}^{(i)}_{frag_j})}d\mathbf{q}_{frag_j}}{Z_{frag_j}}}\right]\ \left[\prod_{j=1}^{N_{del}}{\frac{\kappa_{dih}d\phi}{2\pi}\ \frac{e^{-\beta \Delta U_k^{dih}}}{\sum_k{e^{-\beta \Delta U_k^{dih}}}}}\right] \\
+                &= \frac{p_{seq}}{N N_{bonds}}\ \frac{e^{-\beta U(\mathbf{q}^{(i)}_{del,n})}d\mathbf{q}}{Z_{del}\Omega_{del}}\ p_{forward}
 
-where :math:`Z_{del} = \prod_i Z_{frag_j}` is the configurational
-partition function over degrees of freedom internal to the deleted
-fragments,
-:math:`U(\mathbf{q}^{(i)}_{del,n}) = \sum_jU(\mathbf{q}_{frag_j})` is
-the summed potential energy of each deleted fragment with the
-conformations in microstate :math:`n`,
-:math:`\Omega_{del} = (2\pi)^{N_{del}}` and :math:`p_{forward}` is the
-biasing probability
-
-.. math:: p_{forward} = \prod_{j=1}^{N_{del}}{\frac{\kappa_{dih}\ e^{-\beta \Delta U_k^{dih}}}{\sum_k{e^{-\beta \Delta U_k^{dih}}}}}
-
-The reverse move is identical except for the potential energy of the
-deleted fragments :math:`U(\mathbf{q}^{(i)}_{del,m})` in microstate
-:math:`m` and the biasing probability :math:`p_{reverse}` which will
-depend on the values of the connecting dihedrals. Using Eqs.
-(`[eq:pNVT_ratio] <#eq:pNVT_ratio>`__) and
-(`[eq:alpha_cbmcRegrow] <#eq:alpha_cbmcRegrow>`__), the acceptance
-criteria is:
+where :math:`Z_{del} = \prod_i Z_{frag_j}` is the configurational partition
+function over degrees of freedom internal to the deleted fragments,
+:math:`U(\mathbf{q}^{(i)}_{del,n}) = \sum_jU(\mathbf{q}_{frag_j})` is the
+summed potential energy of each deleted fragment with the conformations in
+microstate :math:`n`, :math:`\Omega_{del} = (2\pi)^{N_{del}}` and
+:math:`p_{forward}` is the biasing probability
 
 .. math::
 
-   :label: eq:pAcc_cbmcRegrow 
-   \ln\left( \frac{\alpha_{mn}}{\alpha_{nm}} \frac{p_m}{p_n} \right) = \beta \left[\left( U(\mathbf{q}^N_n) - U(\mathbf{q}^{(i)}_{del,n})\right) - \left(U(\mathbf{q}^N_m) - U(\mathbf{q}^{(i)}_{del,m})\right)\right] + \ln\left( \frac{p_{forward}}{p_{reverse}} \right)
+    p_{forward} = \prod_{j=1}^{N_{del}}{\frac{\kappa_{dih}\ e^{-\beta \Delta U_k^{dih}}}{\sum_k{e^{-\beta \Delta U_k^{dih}}}}}
 
-Eq. (`[eq:pAcc_cbmcRegrow] <#eq:pAcc_cbmcRegrow>`__) is implemented in
-subroutine cut_N_grow() in file move_regrow.f90.
+The reverse move is identical except for the potential energy of the deleted
+fragments :math:`U(\mathbf{q}^{(i)}_{del,m})` in microstate :math:`m` and the
+biasing probability :math:`p_{reverse}` which will depend on the values of the
+connecting dihedrals. Using Eqs.  :eq:`pnvtratio` and
+:eq:`eq:alpha_cbmc_regrow`, the acceptance criteria is:
+
+.. math::
+    :label: eq:pacc_cbmc_regrow
+
+    \ln\left( \frac{\alpha_{mn}}{\alpha_{nm}} \frac{p_m}{p_n} \right) = \beta \left[\left( U(\mathbf{q}^N_n) - U(\mathbf{q}^{(i)}_{del,n})\right) - \left(U(\mathbf{q}^N_m) - U(\mathbf{q}^{(i)}_{del,m})\right)\right] + \ln\left( \frac{p_{forward}}{p_{reverse}} \right)
+
+Eq. :eq:`eq:pacc_cbmc_regrow` is implemented in subroutine cut_N_grow() in file
+move_regrow.f90.
 
 ::
 
@@ -889,62 +865,52 @@ subroutine cut_N_grow() in file move_regrow.f90.
 
      accept = accept_or_reject(ln_pacc)
 
-.. raw:: latex
-
-   \centering
-
+.. _table:cbmc_regrow:
 .. table:: Variable symbols and code names for regrowing a molecule
 
-   +-----------------------------------+-----------------------------------+
-   | Symbol                            | Code name                         |
-   +===================================+===================================+
-   | :math:`\beta`                     | beta(ibox)                        |
-   +-----------------------------------+-----------------------------------+
-   | :math:`U(\mathbf{q}^N_n) - U(\mat | delta_e_n - nrg_ring_frag_forward |
-   | hbf{q}^{(i)}_{del,n})`            |                                   |
-   +-----------------------------------+-----------------------------------+
-   | :math:`U(\mathbf{q}^N_m) - U(\mat | delta_e_o - nrg_ring_frag_reverse |
-   | hbf{q}^{(i)}_{del,m})`            |                                   |
-   +-----------------------------------+-----------------------------------+
-   | :math:`ln(p_{forward})`           | ln_pfor                           |
-   +-----------------------------------+-----------------------------------+
-   | :math:`ln(p_{reverse})`           | ln_prev                           |
-   +-----------------------------------+-----------------------------------+
-   | .. raw:: latex                    |                                   |
-   |                                   |                                   |
-   |    \multicolumn{2}{c}{}           |                                   |
-   +-----------------------------------+-----------------------------------+
+   +---------------------------------------------------------+-----------------------------------+
+   | Symbol                                                  | Code name                         |
+   +=========================================================+===================================+
+   | :math:`\beta`                                           | beta(ibox)                        |
+   +---------------------------------------------------------+-----------------------------------+
+   | :math:`U(\mathbf{q}^N_n) - U(\mathbf{q}^{(i)}_{del,n})` | delta_e_n - nrg_ring_frag_forward |
+   +---------------------------------------------------------+-----------------------------------+
+   | :math:`U(\mathbf{q}^N_m) - U(\mathbf{q}^{(i)}_{del,m})` | delta_e_o - nrg_ring_frag_reverse |
+   +---------------------------------------------------------+-----------------------------------+
+   | :math:`ln(p_{forward})`                                 | ln_pfor                           |
+   +---------------------------------------------------------+-----------------------------------+
+   | :math:`ln(p_{reverse})`                                 | ln_prev                           |
+   +---------------------------------------------------------+-----------------------------------+
 
 .. _sec:gibbs:
 
 Gibbs Ensemble Monte Carlo
 --------------------------
 
-| The Gibbs Ensemble Monte Carlo method is a standard technique for
-  studying phase equilibria of pure fluids and mixtures. It is often
-  used to study vapor-liquid equilibria due to its intuitive physical
-  basis. In Cassandra, the NVT and NPT versions of the Gibbs Ensemble
-  (GEMC-NVT and GEMC-NPT) are implemented. The GEMC-NVT method is
-  suitable for simulating vapor liquid equilibria of pure systems, since
-  pure substances require the specification of only one intensive
-  variable (temperature) to completely specify a state of two phases. By
-  contrast, mixtures require the specification of an additional degree
-  of freedom (pressure). Thus, in the GEMC-NPT method, the pressure is
-  specified in addition to temperature.
-| The partition functions and microstate probabilities are derived for
-  GEMC-NVT and GEMC-NPT in sections `1.4.1 <#sec:gibbs_nvt>`__ and
-  `1.4.2 <#sec:gibbs_npt>`__, respectively. In both GEMC-NVT and
-  GEMC-NPT, thermal equilibrium is attained by performing translation,
-  rotation and regrowth moves. The acceptance rules for these moves are
-  identical to those presented in sections `1.1.1 <#sec:translate>`__,
-  `1.1.2 <#sec:rotate>`__, `1.1.3 <#sec:regrow>`__ and
-  `1.3.3 <#sec:cbmcRegrow>`__. Pressure equilibrium is achieved by
-  exchanging volume, in the case of GEMC-NVT, and independently changing
-  the volume of each box, in the case of GEMC-NPT. The acceptance rule
-  for the exchanging volume in GEMC-NVT is derived and its Cassandra
-  implementation is presented in section `1.4.3 <#sec:vol_swap>`__. The
-  acceptance rule for swapping a molecule in either GEMC-NVT or GEMC-NPT
-  are derived in section `1.4.4 <#sec:mol_swap>`__.
+The Gibbs Ensemble Monte Carlo method is a standard technique for studying
+phase equilibria of pure fluids and mixtures. It is often used to study
+vapor-liquid equilibria due to its intuitive physical basis. In Cassandra, the
+NVT and NPT versions of the Gibbs Ensemble (GEMC-NVT and GEMC-NPT) are
+implemented. The GEMC-NVT method is suitable for simulating vapor liquid
+equilibria of pure systems, since pure substances require the specification of
+only one intensive variable (temperature) to completely specify a state of two
+phases. By contrast, mixtures require the specification of an additional degree
+of freedom (pressure). Thus, in the GEMC-NPT method, the pressure is specified
+in addition to temperature.
+
+The partition functions and microstate probabilities are derived for GEMC-NVT
+and GEMC-NPT in sections `1.4.1 <#sec:gibbs_nvt>`__ and `1.4.2
+<#sec:gibbs_npt>`__, respectively. In both GEMC-NVT and GEMC-NPT, thermal
+equilibrium is attained by performing translation, rotation and regrowth moves.
+The acceptance rules for these moves are identical to those presented in
+sections `1.1.1 <#sec:translate>`__, `1.1.2 <#sec:rotate>`__, `1.1.3
+<#sec:regrow>`__ and `1.3.3 <#sec:cbmcRegrow>`__. Pressure equilibrium is
+achieved by exchanging volume, in the case of GEMC-NVT, and independently
+changing the volume of each box, in the case of GEMC-NPT. The acceptance rule
+for the exchanging volume in GEMC-NVT is derived and its Cassandra
+implementation is presented in section `1.4.3 <#sec:vol_swap>`__. The
+acceptance rule for swapping a molecule in either GEMC-NVT or GEMC-NPT are
+derived in section `1.4.4 <#sec:mol_swap>`__.
 
 .. _sec:gibbs_nvt:
 
@@ -952,10 +918,9 @@ Gibbs Ensemble-NVT
 ~~~~~~~~~~~~~~~~~~
 
 In the GEMC-NVT method, there are two boxes A and B. To achieve phase
-equilibrium, the boxes are allowed to exchange volume and particles
-under the constraint of constant total volume (:math:`V^t=V^A + V^B`)
-and constant number of particles (:math:`N^t=N^A + N^B`). The partition
-function is
+equilibrium, the boxes are allowed to exchange volume and particles under the
+constraint of constant total volume (:math:`V^t=V^A + V^B`) and constant number
+of particles (:math:`N^t=N^A + N^B`). The partition function is
 
 .. math::
    :label: eq:partition_fxn_genvt
@@ -965,134 +930,127 @@ function is
 where :math:`Q(N,V,T)` is the canonical partition function given in Eq.
 :eq:`eq:partition_fxn_nvt`. Since both boxes are maintained at the same
 temperature the kinetic contribution of each molecule is independent of the box
-in which it is located. The configurational partition function :math:`Z_{GE}` is
-defined by separating the momenta integrals from the configurational integrals,
-volume integrals and molecular sums
+in which it is located. The configurational partition function :math:`Z_{GE}`
+is defined by separating the momenta integrals from the configurational
+integrals, volume integrals and molecular sums
 
 .. math::
+    :label: eq:config_partition_fxn_genvt
 
-   Z_{GE}\left(N^t,V^t,T\right) = \sum^{N^t}_{N{^A}=0} \int^{V^t}_0 dV^A\ Z(N^A,V^A,T)\ Z(N^t-N^A,V^t-V^A,T)
-   :label: eq:configPartitionFn_GENVT 
+    Z_{GE}\left(N^t,V^t,T\right) = \sum^{N^t}_{N{^A}=0} \int^{V^t}_0 dV^A\ Z(N^A,V^A,T)\ Z(N^t-N^A,V^t-V^A,T)
 
 The probability of microstate :math:`m` in the NVT Gibbs ensemble is
 
 .. math::
+    :label: eq:p_genvt
 
-   p_m = \frac{e^{-\beta U^A \left(\textbf{q}^{N^A}\right) -\beta U^B \left(\textbf{q}^{N^B}\right)} d\textbf{q}^{N^A} d\textbf{q}^{N^B} dV^A}{Z_{GE}(N^t,V^t,T)}
-   :label: eq:pGENVT 
+    p_m = \frac{e^{-\beta U^A \left(\textbf{q}^{N^A}\right) -\beta U^B \left(\textbf{q}^{N^B}\right)} d\textbf{q}^{N^A} d\textbf{q}^{N^B} dV^A}{Z_{GE}(N^t,V^t,T)}
 
-| Note that the molecule number factorials are not included in equation
-  `[eq:pGENVT] <#eq:pGENVT>`__, as particles are distinguishable in a
-  simulation (see also equation `[eq:pmuvt] <#eq:pmuvt>`__).
-| For two microstates :math:`m` and :math:`n` that differ only by a
-  thermal move of a molecule in box A, the ratio of microstate
-  probabilities is
+Note that the molecule number factorials are not included in Eq.
+:eq:`eq:p_genvt`, as particles are distinguishable in a
+simulation (see also Eq. :eq:`eq:pmuvt`.
+
+For two microstates :math:`m` and :math:`n` that differ only by a
+thermal move of a molecule in box A, the ratio of microstate
+probabilities is
 
 .. math::
+   :label: eq:p_genvt_ratio
 
-   \begin{aligned}
-   :label: eq:pGENVT_ratio 
-   \frac{p_m}{p_n}&= e^{\beta \Delta U^A}\end{aligned}
+   \frac{p_m}{p_n} = e^{\beta \Delta U^A}
 
-similar to Eq. `[eq:pNVT_ratio] <#eq:pNVT_ratio>`__. As a result,
-thermal moves have the same acceptance rule in GEMC-NVT as they do in
-other ensembles. The differential elements :math:`d\mathbf{q}` will
-likewise cancel from the acceptance criteria when swapping a molecule
-between boxes. When exchanging volume, however, the differential
-elements will reduce to a ratio of the old volume to the new, as shown
-in section `1.4.3 <#sec:vol_swap>`__.
+similar to Eq. :eq:`pnvtratio`. As a result, thermal moves
+have the same acceptance rule in GEMC-NVT as they do in other ensembles. The
+differential elements :math:`d\mathbf{q}` will likewise cancel from the
+acceptance criteria when swapping a molecule between boxes. When exchanging
+volume, however, the differential elements will reduce to a ratio of the old
+volume to the new, as shown in section `1.4.3 <#sec:vol_swap>`__.
 
 .. _sec:gibbs_npt:
 
 Gibbs Ensemble-NPT
 ~~~~~~~~~~~~~~~~~~
 
-| The GEMC-NPT method is only valid for sampling phase equilibria in
-  multicomponent systems. It is similar to GEMC-NVT, except that the
-  volume of each box fluctuates independently. Consequently, the total
-  volume of the system is not constant and the pressure must be
-  specified in addition to the temperature. This is consistent with the
-  Gibbs phase rule for mixtures, which requires the specification of two
-  intensive variables (e.g. pressure and temperature) to fully specify a
-  state with two phases.
-| The partition function is
+The GEMC-NPT method is only valid for sampling phase equilibria in
+multicomponent systems. It is similar to GEMC-NVT, except that the volume of
+each box fluctuates independently. Consequently, the total volume of the system
+is not constant and the pressure must be specified in addition to the
+temperature. This is consistent with the Gibbs phase rule for mixtures, which
+requires the specification of two intensive variables (e.g. pressure and
+temperature) to fully specify a state with two phases.
+
+The partition function is
 
 .. math::
+    :label: eq:partition_fxn_genpt
 
-   \Delta_{GE}\left(\{N^t\},P,T\right) = \sum^{N^t_1}_{N^A_1=0} ... \sum^{N^t_s}_{N^A_s=0} 
+    \Delta_{GE}\left(\{N^t\},P,T\right) = \sum^{N^t_1}_{N^A_1=0} ... \sum^{N^t_s}_{N^A_s=0}
                                        \ \Delta(\{N^A\},P,T)\ \Delta(\{N^t-N^A\},P,T)
-   :label: eq:partitionFn_GENPT 
 
 where :math:`\{N\}` is the number of molecules of each species,
-:math:`\Delta({N},P,T)` is the multicomponent analog to Eq.
-`[eq:partition_fxn_npt] <#eq:partition_fxn_npt>`__, and there is a separate
-sum for each species over the number of molecules in box A. The kinetic
-contribution to :math:`\Delta_{GE}` can be separated giving the
-configurational partition function
+:math:`\Delta({N},P,T)` is the multicomponent analog to Eq. :eq:`eq:partition_fxn_npt`, and there is a separate sum
+for each species over the number of molecules in box A. The kinetic
+contribution to :math:`\Delta_{GE}` can be separated giving the configurational
+partition function
 
 .. math::
+    :label: eq:config_partition_fxn_genpt
 
-   \Delta_{Z,GE}\left({N^t},P,T\right) = \sum^{N^t_1}_{N^A_1=0} ... \sum^{N^t_s}_{N^A_s=0} 
+    \Delta_{Z,GE}\left({N^t},P,T\right) = \sum^{N^t_1}_{N^A_1=0} ... \sum^{N^t_s}_{N^A_s=0}
                                        \ \Delta_Z({N^A},P,T)\ \Delta_Z({N^t-N^A},P,T)
-   :label: eq:configPartitionFn_GENPT 
 
 where :math:`\Delta_Z({N},P,T)` is the multicomponent analog to Eq.
-`[eq:config_partition_fxn_npt] <#eq:config_partition_fxn_npt>`__. The
+:eq:`eq:config_partition_fxn_npt`. The
 probability of microstate :math:`m` in this ensemble is
 
 .. math::
+    :label: eq:p_genpt
 
-   p_m = \frac{e^{-\beta U^A -\beta U^B - \beta P V^A - \beta P V^B} dV^A dV^B}{\Delta_{Z,GE}({N^t},P,T)} 
+    p_m = \frac{e^{-\beta U^A -\beta U^B - \beta P V^A - \beta P V^B} dV^A dV^B}{\Delta_{Z,GE}({N^t},P,T)}
          \prod_{s=1}^{N_{species}} \left[ d\mathbf{q}_s^{A} \right]^{N_s^A}
                                    \left[ d\mathbf{q}_s^{B} \right]^{N_s^B}
-   :label: eq:pGENPT 
 
-Similar to GEMC-NVT, the ratio of probabilities between microstates that
-differ by only a thermal move in box A is
+Similar to GEMC-NVT, the ratio of probabilities between microstates that differ
+by only a thermal move in box A is
 
 .. math::
 
-   \begin{aligned}
-   \frac{p_m}{p_n}&= e^{\beta \Delta U^A}\end{aligned}
+   \frac{p_m}{p_n} = e^{\beta \Delta U^A}
 
 Volume changes are only attempted on one box at a time. The ratio of
-probabilities between microstates that differ only by the volume of box
-A is
+probabilities between microstates that differ only by the volume of box A is
 
 .. math::
 
-   \begin{aligned}
-   \frac{p_m}{p_n}&= e^{\beta \Delta U^A} + \left( \frac{V^A_m}{V^A_n} \right)^{N^A}\end{aligned}
+   \frac{p_m}{p_n} = e^{\beta \Delta U^A} + \left( \frac{V^A_m}{V^A_n} \right)^{N^A}
 
-similar to Eq. `[eq:pnpt_ratio] <#eq:pnpt_ratio>`__. As a result, volume
-moves in GEMC-NPT have the same acceptance criteria as in the NPT
-ensemble (see Eq. `[eq:pacc_volume] <#eq:pacc_volume>`__).
+similar to Eq. :eq:`eq:pnpt_ratio`. As a result, volume moves
+in GEMC-NPT have the same acceptance criteria as in the NPT ensemble (see Eq.
+:eq:`eq:pacc_volume`.
 
 .. _sec:vol_swap:
 
 Volume Exchange Moves
 ~~~~~~~~~~~~~~~~~~~~~
 
-In GEMC-NVT, volume is exchanged between the two boxes to achieve
-pressure equilibrium using a symmetric volume move,
-:math:`\alpha_{mn} = \alpha_{nm}`. If box A is shrunk by
-:math:`\Delta V`, then box B grows by :math:`\Delta V` and vice versa.
-:math:`\Delta V` is chosen from a uniform distribution with probability
-:math:`1/\delta V_{max}`, where :math:`\delta V_{max}` is an adjustable
-parameter. The scaled center of mass positions of each molecule are held
-constant, introducing a ratio of volumes into the acceptance criteria
-similar to Eq. `[eq:pacc_volume] <#eq:pacc_volume>`__.
+In GEMC-NVT, volume is exchanged between the two boxes to achieve pressure
+equilibrium using a symmetric volume move, :math:`\alpha_{mn} = \alpha_{nm}`.
+If box A is shrunk by :math:`\Delta V`, then box B grows by :math:`\Delta V`
+and vice versa.  :math:`\Delta V` is chosen from a uniform distribution with
+probability :math:`1/\delta V_{max}`, where :math:`\delta V_{max}` is an
+adjustable parameter. The scaled center of mass positions of each molecule are
+held constant, introducing a ratio of volumes into the acceptance criteria
+similar to Eq. :eq:`eq:pacc_volume`.
 
-The acceptance rule is derived from equation
-`[eq:pGENVT] <#eq:pGENVT>`__ and yields
+The acceptance rule is derived from Eq. :eq:`eq:p_genvt` and
+yields
 
 .. math::
+    :label: eq:pacc_vol_swap
 
-   \ln \left( \frac{\alpha_{mn}}{\alpha_{nm}} \frac{p_m}{p_n} \right) = \ln \left( \frac{p_m}{p_n} \right) = \beta \Delta U^A + \beta \Delta U^B + N^A \ln\left(\frac{V^A_m}{V^A_n}\right) + N^B \ln\left(\frac{V^B_m}{V^B_n}\right)
-   :label: eq:pAcc_vol_swap 
+    \ln \left( \frac{\alpha_{mn}}{\alpha_{nm}} \frac{p_m}{p_n} \right) = \ln \left( \frac{p_m}{p_n} \right) = \beta \Delta U^A + \beta \Delta U^B + N^A \ln\left(\frac{V^A_m}{V^A_n}\right) + N^B \ln\left(\frac{V^B_m}{V^B_n}\right)
 
-[table:gemc_nvt_volume]
-
+.. _table:gemc_nvt_volume:
 .. table:: Variable symbols and code names for the volume scaling move
 in the GEMC-NVT method.
 
@@ -1119,13 +1077,8 @@ in the GEMC-NVT method.
    +-------------------------+-----------------------+
    | :math:`V^B_n`           | box_list_old_2%volume |
    +-------------------------+-----------------------+
-   | .. raw:: latex          |                       |
-   |                         |                       |
-   |    \multicolumn{2}{c}{} |                       |
-   +-------------------------+-----------------------+
 
-This acceptance rule is implemented in the file move_vol_swap.f90 as
-follows
+This acceptance rule is implemented in the file move_vol_swap.f90 as follows
 
 ::
 
@@ -1138,21 +1091,21 @@ follows
 Molecule Exchange Moves
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-In either GEMC-NVT or GEMC-NPT, molecules are swapped between the two
-boxes to equalize the chemical potential of each species. The ratio of
-probabilities for microstates that differ only by swapping a molecule of
-species :math:`s` from box :math:`out` to box :math:`in` is
+In either GEMC-NVT or GEMC-NPT, molecules are swapped between the two boxes to
+equalize the chemical potential of each species. The ratio of probabilities for
+microstates that differ only by swapping a molecule of species :math:`s` from
+box :math:`out` to box :math:`in` is
 
 .. math::
+    :label: eq:p_genpt_ratio_mol
 
-   \frac{p_m}{p_n} = e^{\beta \Delta U^A + \beta \Delta U^B} \frac{d\mathbf{q}_s^{out}}{d\mathbf{q}_s^{in}}
-   :label: eq:pGENPT_ratio_mol 
+    \frac{p_m}{p_n} = e^{\beta \Delta U^A + \beta \Delta U^B} \frac{d\mathbf{q}_s^{out}}{d\mathbf{q}_s^{in}}
 
 where the differential elements :math:`d\mathbf{q}` will cancel from the
-acceptance criteria by similar terms in :math:`\alpha_{mn}/\alpha_{nm}`.
-The particle swap is not symmetric since each molecule is inserted and
-deleted using configurational bias. The forward probability
-:math:`\alpha_{mn}` follows from the steps used to swap a molecule:
+acceptance criteria by similar terms in :math:`\alpha_{mn}/\alpha_{nm}`.  The
+particle swap is not symmetric since each molecule is inserted and deleted
+using configurational bias. The forward probability :math:`\alpha_{mn}` follows
+from the steps used to swap a molecule:
 
 #. Pick a box :math:`out` with probability :math:`p_{box}`, where
    :math:`p_{box}` is
@@ -1175,8 +1128,8 @@ deleted using configurational bias. The forward probability
 #. Insert molecule in box :math:`in` using protocol presented in section
    `1.3.1 <#sec:cbmcInsert>`__
 
-If the default probabilities are used at each step, then a swap is
-attempted for each molecule with uniform probability
+If the default probabilities are used at each step, then a swap is attempted
+for each molecule with uniform probability
 
 .. math:: \frac{N^{out}}{N^t} \frac{N^{out}_s}{N^{out}} \frac{1}{N^{out}_s} = \frac{1}{N^t}
 
@@ -1184,28 +1137,27 @@ The attempt probability of generating configuration :math:`n`
 
 .. math::
 
-   \alpha_{mn} = p_{out,m} p_{spec,m} \frac{1}{N^{out}_{s,m}} p_{seq}\ p_{bias,n}\ 
+   \alpha_{mn} = p_{out,m} p_{spec,m} \frac{1}{N^{out}_{s,m}} p_{seq}\ p_{bias,n}\
                  \frac{e^{-\beta U^{in}(\mathbf{q}_{frag,n})}d\mathbf{q}_s^{in}}{V^{in}Z_{rot}Z_{frag}\Omega_{dih}}
-   :label: eq:alpha_mol_swap 
+   :label: eq:alpha_mol_swap
 
-where :math:`p_{bias}` is defined in Eq. `[eq:p_bias] <#eq:p_bias>`__.
-The reverse probability :math:`\alpha_{nm}` is calculated similarly. The
-acceptance rule is
+where :math:`p_{bias}` is defined in Eq. :eq:`eq:p_bias`.  The
+reverse probability :math:`\alpha_{nm}` is calculated similarly. The acceptance
+rule is
 
 .. math::
 
-   \ln \left( \frac{\alpha_{mn}}{\alpha_{nm}} \frac{p_m}{p_n} \right) = 
-              \ln \left( \frac{p_{out,m}}{p_{out,n}} \frac{p_{spec,m}}{p_{spec,n}} \frac{ p_{bias,n}}{p_{bias,m}} 
-                         \frac{N^{in}_{s,n}+1}{N^{out}_{s,m}} \frac{V^{out}}{V^{in}} \right) 
+   \ln \left( \frac{\alpha_{mn}}{\alpha_{nm}} \frac{p_m}{p_n} \right) =
+              \ln \left( \frac{p_{out,m}}{p_{out,n}} \frac{p_{spec,m}}{p_{spec,n}} \frac{ p_{bias,n}}{p_{bias,m}}
+                         \frac{N^{in}_{s,n}+1}{N^{out}_{s,m}} \frac{V^{out}}{V^{in}} \right)
             - \beta U^{in}(\mathbf{q}_{frag,n}) + \beta U^{out}(\mathbf{q}_{frag,m}) + \beta \Delta U^{out} + \beta \Delta U^{in}
-   :label: eq:pAcc_mol_swap 
+   :label: eq:pAcc_mol_swap
 
-where :math:`p_{seq}` does not appear since the same fragment regrowth
-sequence is used in the forward and reverse moves. The molecule swap
-move is implemented in the file move_mol_swap.f90 as follows
+where :math:`p_{seq}` does not appear since the same fragment regrowth sequence
+is used in the forward and reverse moves. The molecule swap move is implemented
+in the file move_mol_swap.f90 as follows
 
-[table:gemc_transfer]
-
+.. _table:gemc_transfer:
 .. table:: Variable symbols and code names for the particle transfer
 move in the GEMC-NVT method.
 
@@ -1236,10 +1188,6 @@ move in the GEMC-NVT method.
    +--------------------------------------+---------------------------------+
    | :math:`p_{out,n} p_{spec,n}`         | P_reverse                       |
    +--------------------------------------+---------------------------------+
-   | .. raw:: latex                       |                                 |
-   |                                      |                                 |
-   |    \multicolumn{2}{c}{}              |                                 |
-   +--------------------------------------+---------------------------------+
 
 ::
 
@@ -1266,19 +1214,17 @@ move in the GEMC-NVT method.
 Multicomponent Systems
 ----------------------
 
-Excluding section `1.4.2 <#sec:gibbs_npt>`__, the acceptance rules for
-all the Monte Carlo techniques expressed in this chapter have been
-developed for pure component systems. The Monte Carlo moves and
-acceptance criteria for multicomponent systems are straightforward
-extensions of the pure component moves. The only modification needed to
-translate, rotate and regrow molecules is to first select a species. In
-these moves, a species is selected randomly in proportion to its mole
-fraction :math:`N_i/N`. When inserting and deleting a molecule, the mole
-fractions of each species change. In these cases, a species in a
-multicomponent system is selected instead with uniform probability
-:math:`1/N_{species}`. In either case, species selection is symmetric
-for both forward and reverse moves and so cancels from the acceptance
-criterion.
+Excluding section `1.4.2 <#sec:gibbs_npt>`__, the acceptance rules for all the
+Monte Carlo techniques expressed in this chapter have been developed for pure
+component systems. The Monte Carlo moves and acceptance criteria for
+multicomponent systems are straightforward extensions of the pure component
+moves. The only modification needed to translate, rotate and regrow molecules
+is to first select a species. In these moves, a species is selected randomly in
+proportion to its mole fraction :math:`N_i/N`. When inserting and deleting a
+molecule, the mole fractions of each species change. In these cases, a species
+in a multicomponent system is selected instead with uniform probability
+:math:`1/N_{species}`. In either case, species selection is symmetric for both
+forward and reverse moves and so cancels from the acceptance criterion.
 
 .. _sec:appendix:
 
@@ -1290,82 +1236,77 @@ Appendix
 Inserting a Molecule Randomly
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To insert a molecule, a position, orientation and molecular conformation
-must each be selected. The probability of inserting the new molecule at
-a random location is :math:`d\mathbf{r}/V`, where :math:`d\mathbf{r}` is
-a Cartesian volume element of a single atom. The probability of choosing
-the molecule orientation is :math:`d\mathbf{q}_{rot}/Z_{rot}`, which for
-a linear molecule is :math:`d \cos(\theta) d\phi / 4\pi` and for a
-nonlinear molecule is :math:`d \cos(\theta)d\phi d\psi/8\pi^2`. The
-probability of the molecule conformation only depends on the remaining
-:math:`2M-5` internal bond angles, dihedral angles and improper angles
-:math:`\mathbf{q}_{int}`. A thermal ensemble of configurations is
-Boltzmann distributed :math:`e^{-\beta U(\mathbf{q}_{int})}/Z_{int}`.
-The overall probability :math:`\alpha_{mn}` is
+To insert a molecule, a position, orientation and molecular conformation must
+each be selected. The probability of inserting the new molecule at a random
+location is :math:`d\mathbf{r}/V`, where :math:`d\mathbf{r}` is a Cartesian
+volume element of a single atom. The probability of choosing the molecule
+orientation is :math:`d\mathbf{q}_{rot}/Z_{rot}`, which for a linear molecule
+is :math:`d \cos(\theta) d\phi / 4\pi` and for a nonlinear molecule is :math:`d
+\cos(\theta)d\phi d\psi/8\pi^2`. The probability of the molecule conformation
+only depends on the remaining :math:`2M-5` internal bond angles, dihedral
+angles and improper angles :math:`\mathbf{q}_{int}`. A thermal ensemble of
+configurations is Boltzmann distributed :math:`e^{-\beta
+U(\mathbf{q}_{int})}/Z_{int}`.  The overall probability :math:`\alpha_{mn}` is
 
 .. math::
+    :label: eq:alpha_random_insert
 
-   :label: eq:alpha_randomInsert 
-   \alpha_{mn} = \frac{d\mathbf{r}}{V}\ \frac{d\mathbf{q}_{rot}}{Z_{rot}}\ \frac{e^{-\beta U(\mathbf{q}_{int,N+1,n})}}{Z_{int}}\ d\mathbf{q}_{int} = \frac{e^{-\beta U(\mathbf{q_{N+1,n}})}}{Z(1,V,T)}\ d\mathbf{q}.
+    \alpha_{mn} = \frac{d\mathbf{r}}{V}\ \frac{d\mathbf{q}_{rot}}{Z_{rot}}\ \frac{e^{-\beta U(\mathbf{q}_{int,N+1,n})}}{Z_{int}}\ d\mathbf{q}_{int} = \frac{e^{-\beta U(\mathbf{q_{N+1,n}})}}{Z(1,V,T)}\ d\mathbf{q}.
 
-where we have used
-Eq. (\ `[eq:config_partition_fxn_1vt] <#eq:config_partition_fxn_1vt>`__) to
-recover :math:`Z(1,V,T)` and recognized that only internal degrees of
-freedom contribute to the potential energy of the isolated
-:math:`N+1`\ th molecule in microstate :math:`n`,
-:math:`U(\mathbf{q}_{N+1,n}) = U(\mathbf{q}_{int,N+1,n})`. For a point
-particle with no rotational or internal degrees of freedom,
-:math:`\alpha_{mn}` reduces to :math:`d\mathbf{r}/V`. For molecules with
-internal flexibility, a library of configurations distributed according
-to :math:`e^{-\beta U(\mathbf{q}_{int})}/Z_{int}` can be generated from
-a single molecule MC simulation. In the reverse move, 1 of the
-:math:`N+1` particles is randomly selected for deletion. The probability
-:math:`\alpha_{nm}` of picking the molecule we just inserted is
+where we have used Eq. :eq:`eq:config_partition_fxn_1vt`
+to recover :math:`Z(1,V,T)` and recognized
+that only internal degrees of freedom contribute to the potential energy of the
+isolated :math:`N+1`\ th molecule in microstate :math:`n`,
+:math:`U(\mathbf{q}_{N+1,n}) = U(\mathbf{q}_{int,N+1,n})`. For a point particle
+with no rotational or internal degrees of freedom, :math:`\alpha_{mn}` reduces
+to :math:`d\mathbf{r}/V`. For molecules with internal flexibility, a library of
+configurations distributed according to :math:`e^{-\beta
+U(\mathbf{q}_{int})}/Z_{int}` can be generated from a single molecule MC
+simulation. In the reverse move, 1 of the :math:`N+1` particles is randomly
+selected for deletion. The probability :math:`\alpha_{nm}` of picking the
+molecule we just inserted is
 
 .. math:: \alpha_{nm} = \frac{1}{N+1}
 
 The acceptance probability for a random insertion move is
 
 .. math::
+    :label: eq:pacc_random_insert_mu
 
-   :label: eq:pAcc_randomInsertMu 
-   \ln\left( \frac{\alpha_{mn}}{\alpha_{nm}} \frac{p_m}{p_n} \right) = \beta \left[\Delta U - U(\mathbf{q}_{N+1})\right] - \beta \mu + \ln\left( \frac{N+1}{Q(1,V,T)} \right)
+    \ln\left( \frac{\alpha_{mn}}{\alpha_{nm}} \frac{p_m}{p_n} \right) = \beta \left[\Delta U - U(\mathbf{q}_{N+1})\right] - \beta \mu + \ln\left( \frac{N+1}{Q(1,V,T)} \right)
 
-where :math:`U(\mathbf{q}_{N+1})` is the intramolecular potential energy
-of the inserted molecule. :math:`Q(1,V,T)` is typically not known a
-priori, nor is it easily estimated. Substituting
-Eq. (\ `[eq:partition_fxn_1vt] <#eq:partition_fxn_1vt>`__) into
-Eq. (\ `[eq:pAcc_randomInsertMu] <#eq:pAcc_randomInsertMu>`__) and
-absorbing :math:`Q_{rot+int}` into a shifted chemical potential
-:math:`\mu'`
+where :math:`U(\mathbf{q}_{N+1})` is the intramolecular potential energy of the
+inserted molecule. :math:`Q(1,V,T)` is typically not known a priori, nor is it
+easily estimated. Substituting Eq. :eq:`eq:partition_fxn_1vt`
+into Eq. :eq:`eq:pacc_random_insert_mu` and absorbing :math:`Q_{rot+int}` into a
+shifted chemical potential :math:`\mu'`
 
 .. math:: \mu' = \mu - k_BT\ln(Q_{rot+int})
 
 gives the acceptance criteria for inserting a molecule
 
 .. math::
+    :label: eq:pacc_random_insert_mu_shift
 
-   :label: eq:pAcc_randomInsertMuShift 
-   \ln\left( \frac{\alpha_{mn}}{\alpha_{nm}} \frac{p_m}{p_n} \right) = \beta \left[\Delta U - U(\mathbf{q}_{N+1})\right] - \beta \mu' + \ln\left( \frac{(N+1)\Lambda^3}{V} \right).
+    \ln\left( \frac{\alpha_{mn}}{\alpha_{nm}} \frac{p_m}{p_n} \right) = \beta \left[\Delta U - U(\mathbf{q}_{N+1})\right] - \beta \mu' + \ln\left( \frac{(N+1)\Lambda^3}{V} \right).
 
 The terms absorbed into :math:`\mu'` are intensive and therefore GCMC
-simulations using
-Eq. (\ `[eq:pAcc_randomInsertMuShift] <#eq:pAcc_randomInsertMuShift>`__)
-will converge to a specific average density. However, the value of
-:math:`\mu'` that corresponds to the converged density will not match
-tabulated values of :math:`\mu` computed from experimental data.
+simulations using Eq. :eq:`pacc_random_insert_mu_shift`
+will converge to a specific average
+density. However, the value of :math:`\mu'` that corresponds to the converged
+density will not match tabulated values of :math:`\mu` computed from
+experimental data.
 
-Substituting Eq. (\ `[eq:mu] <#eq:mu>`__) into
-Eq. (\ `[eq:pAcc_randomInsertMu] <#eq:pAcc_randomInsertMu>`__) gives
+Substituting Eq. :eq:`eq:mu` into Eq. :eq:`eq:pacc_random_insert_mu` gives
 
 .. math::
+    :label: eq:pacc_random_insert_f
 
-   :label: eq:pAcc_randomInsertF 
-   \ln\left( \frac{\alpha_{mn}}{\alpha_{nm}} \frac{p_m}{p_n} \right) = \beta \left[\Delta U - U(\mathbf{q}_{N+1})\right] + \ln\left( \frac{N+1}{\beta f V} \right)
+    \ln\left( \frac{\alpha_{mn}}{\alpha_{nm}} \frac{p_m}{p_n} \right) = \beta \left[\Delta U - U(\mathbf{q}_{N+1})\right] + \ln\left( \frac{N+1}{\beta f V} \right)
 
-where no terms have been absorbed into the fugacity :math:`f`. Note also
-that the partition function has completely been eliminated from the
-acceptance criteria.
+where no terms have been absorbed into the fugacity :math:`f`. Note also that
+the partition function has completely been eliminated from the acceptance
+criteria.
 
 .. _sec:randomDelete:
 
@@ -1384,19 +1325,20 @@ is
 The acceptance probability for deleting a molecule inserted randomly is
 
 .. math::
+    :label: eq:pacc_random_delete_mushift
 
-   \begin{aligned}
-   :label: eq:pAcc_randomDeleteMuShift 
-   \ln\left( \frac{\alpha_{mn}}{\alpha_{nm}} \frac{p_m}{p_n} \right) &= \beta \left[\Delta U + U(\mathbf{q}_{N})\right] + \beta \mu' + \ln\left( \frac{V}{N\Lambda^3} \right) \\
-   :label: eq:pAcc_randomDeleteF 
-   &= \beta \left[\Delta U + U(\mathbf{q}_{N})\right] + \ln\left( \frac{\beta f V}{N} \right)\end{aligned}
+    \ln\left( \frac{\alpha_{mn}}{\alpha_{nm}} \frac{p_m}{p_n} \right) = \beta \left[\Delta U + U(\mathbf{q}_{N})\right] + \beta \mu' + \ln\left( \frac{V}{N\Lambda^3} \right)
 
-Note that in :math:`\Delta U` is defined differently in
-Eqs. (\ `[eq:pAcc_randomInsertMuShift] <#eq:pAcc_randomInsertMuShift>`__)
-and (`[eq:pAcc_randomInsertF] <#eq:pAcc_randomInsertF>`__) than in
-Eqs. (\ `[eq:pAcc_randomDeleteMuShift] <#eq:pAcc_randomDeleteMuShift>`__)
-and (`[eq:pAcc_randomDeleteF] <#eq:pAcc_randomDeleteF>`__). In the
-former, the new configuration has more molecules,
-:math:`\Delta U = U(\mathbf{q}_n^{N+1}) - U(\mathbf{q}_m^N)`. In the
-latter, the new configuration has fewer molecules,
+.. math::
+    :label: eq:pacc_random_delete_f
+
+    \ln\left( \frac{\alpha_{mn}}{\alpha_{nm}} \frac{p_m}{p_n} \right) = \beta \left[\Delta U + U(\mathbf{q}_{N})\right] + \ln\left( \frac{\beta f V}{N} \right)
+
+Note that in :math:`\Delta U` is defined differently in Eqs. (\
+`[eq:pacc_random_insert_mu_shift] <#eq:pacc_random_insert_mu_shift>`__) and
+(`[eq:pacc_random_insert_f] <#eq:pacc_random_insert_f>`__) than in Eqs. (\
+`[eq:pacc_random_delete_mushift] <#eq:pacc_random_delete_mushift>`__) and
+(`[eq:pacc_random_delete_f] <#eq:pacc_random_delete_f>`__). In the former, the new
+configuration has more molecules, :math:`\Delta U = U(\mathbf{q}_n^{N+1}) -
+U(\mathbf{q}_m^N)`. In the latter, the new configuration has fewer molecules,
 :math:`\Delta U = U(\mathbf{q}_n^{N-1}) - U(\mathbf{q}_m^N)`.
